@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <form class="form">
+        <input type="text" class="input" id="title" placeholder="Title:" />
+        <input
+          type="text"
+          class="input"
+          id="description"
+          placeholder="Description:"
+        />
+        <button type="submit" id="addCard" class="button">Submit</button>
+      </form>
+
+      <div class="desk">
+        <div class="desk__card">
+          <div class="desk__info">
+            <p>Title:</p>
+            <p>Description:</p>
+            <p>Data:</p>
+          </div>
+          <div class="buttons__card">
+            <button class="button button__card" id="btnDelete">Delete</button>
+            <button class="button button__card" id="btnEdit">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

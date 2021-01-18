@@ -31,6 +31,7 @@ const drawCard = () => {
   let pDesc = document.createElement("p");
   let pDate = document.createElement("p");
   const choice = userData[userData.length - 1];
+  let date = new Date();
 
   card.className = "desk__card";
   cardInfo.className = "desk__info";
@@ -44,25 +45,24 @@ const drawCard = () => {
   btnEdit.id = "btnEdit";
   btnEdit.innerText = "Edit";
 
-  var date = new Date(2014, 11, 31, 12, 30, 0);
-
-  var options = {
-    era: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-    timezone: "UTC",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  };
-
   desk.append(card);
   card.append(cardInfo);
   pTitle.append("Title: ", choice.title);
   pDesc.append("Description: ", choice.description);
-  pDate.append("Data: ", date.toLocaleString("ru", options));
+  pDate.append(
+    "Data: ",
+    date.getDate(),
+    "-",
+    date.getMonth() + 1,
+    "-",
+    date.getFullYear(),
+    ", ",
+    date.getHours(),
+    ":",
+    date.getMinutes(),
+    ":",
+    date.getSeconds()
+  );
   cardInfo.append(pTitle, pDesc, pDate);
   cardInfo.append(cardButton);
   cardButton.append(btnDelete, btnEdit);

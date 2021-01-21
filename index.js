@@ -9,25 +9,21 @@ const btnModalApply = document.querySelector("#btnModalApply");
 const inputTitle = document.querySelector("#modal-title");
 const inputDescription = document.querySelector("#modal-description");
 
-const date = new Date();
-
 let storageIndex = 0;
 let userData = [];
+let dateStorage = "";
 // Меньше глобальных переменных!
 
 // Функция отрисовки карточки
 const drawCards = () => {
   desk.innerHTML = ""; // Каждый раз пишем заново, исходя из массива
+
   userData.forEach((item) => {
     desk.innerHTML += `<div class="desk__card">
     <div class="desk__info"> 
     <p>Title: <span class="card__title">${item.title}</span></p>
-    <p>Description: <span class="card__description">${
-      item.description
-    }</span></p>
-    <p>Date: <span class="card__date">${date.getDate()}${
-      date.getMonth() - 1
-    }.${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span></p>
+    <p>Description: <span class="card__description">${item.description}</span></p>
+    <p>Date: <span class="card__date">${item.date}</span></p>
     <div class="buttons__card">
     <button id="btnDelete" class="button button__card">Delete</button>
     <button id="btnEdit" class="button button__card">Edit</button>
@@ -37,19 +33,26 @@ const drawCards = () => {
 };
 
 // Функция добавления карточки
-addCard.addEventListener("click", (event) => {
-  event.preventDefault();
+addCard.addEventListener("click" || "keyup", (event) => {
+  if (event.code === "Enter" || event.type === "click") {
+    event.preventDefault();
 
-  const title = document.querySelector("#title").value;
-  const description = document.querySelector("#description").value;
+    const title = document.querySelector("#title").value;
+    const description = document.querySelector("#description").value;
+    let date = new Date();
 
-  userData.push({ title: title, description: description });
+    date = `${date.getDate()}${
+      date.getMonth() - 1
+    }.${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
-  console.log(userData);
+    userData.push({ title: title, description: description, date: date });
 
-  drawCards();
+    console.log(userData);
 
-  form.reset();
+    drawCards();
+
+    form.reset();
+  }
 });
 
 // Функция удаления
@@ -86,12 +89,17 @@ const editCard = (event) => {
   const card = event.target.closest(".desk__card");
   const title = card.querySelector(".card__title").textContent;
   const description = card.querySelector(".card__description").textContent;
+  const date = card.querySelector(".card__date").textContent;
 
   inputTitle.value = title;
   inputDescription.value = description;
+  dateStorage = date;
 
   storageIndex = userData.findIndex(
-    (elem) => elem.title === title && elem.description === description
+    (elem) =>
+      elem.title === title &&
+      elem.description === description &&
+      elem.date === date
   );
 
   openModal();
@@ -103,6 +111,7 @@ const editApply = (event) => {
   userData.splice(storageIndex, 1, {
     title: inputTitle.value,
     description: inputDescription.value,
+    date: dateStorage,
   });
 
   closeModal();

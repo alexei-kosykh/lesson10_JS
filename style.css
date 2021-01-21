@@ -80,3 +80,7 @@
 .modal__input {
   width: 90%;
 }
+
+.shadow {
+  box-shadow: 0 10px 10px 1px #777;
+}

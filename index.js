@@ -9,10 +9,10 @@ const btnModalApply = document.querySelector("#btnModalApply");
 const inputTitle = document.querySelector("#modal-title");
 const inputDescription = document.querySelector("#modal-description");
 
-let storageIndex = 0;
+let storageIndex = 0; // хранение индекса при открытии модалки
 let userData = [];
-let dateStorage = "";
-// Меньше глобальных переменных!
+let dateStorage = ""; // хранение даты при открытии модалки
+let shadowDelete = 0; // для запоминания места добавления тени
 
 // Функция отрисовки карточки
 const drawCards = () => {
@@ -21,13 +21,12 @@ const drawCards = () => {
   userData.forEach((item) => {
     desk.innerHTML += `<div class="desk__card">
     <div class="desk__info"> 
-    <p>Title: <span class="card__title">${item.title}</span></p>
-    <p>Description: <span class="card__description">${item.description}</span></p>
-    <p>Date: <span class="card__date">${item.date}</span></p>
+    <p class="desk__title">Title: <span class="card__title">${item.title}</span></p>
+    <p class="desk__description">Description: <span class="card__description">${item.description}</span></p>
+    <p>Date: <span class="card__date">${item.date}</span></p></div>
     <div class="buttons__card">
     <button id="btnDelete" class="button button__card">Delete</button>
     <button id="btnEdit" class="button button__card">Edit</button>
-    </div>
     </div></div>`;
   });
 };
@@ -57,22 +56,17 @@ addCard.addEventListener("click" || "keyup", (event) => {
 
 // Функция удаления
 const deleteCard = (event) => {
-  // Нужно найти заголовок и описание
   const card = event.target.closest(".desk__card");
-  // найти внутри другого элемента
   const title = card.querySelector(".card__title").textContent;
   const description = card.querySelector(".card__description").textContent;
 
-  // Далее: forEach либо findIndex (2 способа)
-  // Способ findIndex
-  // Находим индекс чтобы использовать splice
   const index = userData.findIndex(
     // findIndex - принимает calback первый элемент массива и дальше сравниваем
     (elem) => elem.title === title && elem.description === description
   );
-  userData.splice(index, 1); // удаляем 1 элемент
+  userData.splice(index, 1);
 
-  drawCards(); // отрисовываем
+  drawCards();
 };
 
 // =======================
@@ -132,11 +126,29 @@ modal.addEventListener("click", (event) => {
 });
 
 // Делегирование событий
-desk.addEventListener("click", (event) => {
-  if (event.target.closest("#btnDelete")) {
-    // delete func
-    deleteCard(event);
+desk.addEventListener("mouseover" || "click", (event) => {
+  let target = event.target;
+  if (event.type === "click") {
+    if (target.closest("#btnDelete")) {
+      // delete func
+      deleteCard(event);
+    } else if (target.closest("#btnEdit")) {
+      editCard(event);
+    }
   } else {
-    editCard(event);
+    if (
+      target.closest(".desk__title") ||
+      target.closest(".desk__description")
+    ) {
+      if (
+        target.closest(".card__title") ||
+        target.closest(".card__description")
+      ) {
+        target.classList.toggle("shadow");
+        shadowDelete = target;
+      }
+    } else if (shadowDelete) {
+      shadowDelete.classList.remove("shadow");
+    }
   }
 });
